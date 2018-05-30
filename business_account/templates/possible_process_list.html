@@ -1,0 +1,85 @@
+{% extends "base.html"%} {% block content %}
+<div class="container">
+</div>
+<div class="container">
+    <div class="row">
+        <div class="card col-md-8 offset-md-2 mt-md-5 col-12" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0 0px 0px;">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="h1 col-md-6">Таблица услуг</div>
+                     <div class="row col-md-6">
+                            <form class="form-inline col-md-12 " method="post">
+                                {{ form.hidden_tag() }}
+                                <div class="form-group col-md-9">
+                                {{ form.words(class_=" form-control col-md-12", required="", placeholder="Найти по ключевым словам") }}
+
+                                </div>
+                                <button class="btn my-2 my-sm-0  btn-outline-warning" type="submit">Найти</button>
+                            </form>
+
+
+                            {% if form.words.errors %}
+                            <div class="alert alert-danger offset-md-4">
+                                <strong>
+                                {%for error in form.words.errors%}
+                                    {{error}}
+                                {%endfor%}
+                                </strong>
+                            </div>
+                            {%endif%}
+
+                        </div>
+
+                </div>
+                <div class="row">
+                     <a class="btn border-warning bg-warning btn-light col-md-4 mb-md-5 offset-md-7" href="{{ url_for('business.add_possible_process') }}" role="button">Создать возможную услугу</a>
+
+                </div>
+
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+
+                                <th>Тип</th>
+                                <th>Цена</th>
+                                <th>Подробнее</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for process in possible_process_list %}
+                            {% if process!=0 %}
+                            <tr>
+                                <th scope="row">{{ process.id_for_business }}</th>
+
+
+                                <td>{{ process.type }}</td>
+
+
+
+                                <td>{{ process.get_price(process.id) }}</td>
+
+                                <td>
+                                    <a href="/business/possible_process/{{ process.id }}">
+                                        <button type="button" class="btn btn-warning">Посмотреть</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endif %}
+
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

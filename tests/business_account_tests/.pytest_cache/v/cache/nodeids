@@ -1,0 +1,15 @@
+[
+  "test_views.py::MainPageTestCase::test_business_main_page_exist",
+  "test_views.py::MainPageTestCase::test_main_main_page_exist",
+  "test_views.py::MainPageTestCase::test_main_page_exist",
+  "test_views.py::RegistrationTestCase::test_registration_page_exist",
+  "test_views.py::RegistrationTestCase::test_registration_page_works",
+  "test_views.py::BusinessTestCase::test_business_forms_exist",
+  "test_views.py::BusinessTestCase::test_business_get_email_works",
+  "test_views.py::BusinessTestCase::test_business_get_name_works",
+  "test_views.py::BusinessCardTestCase::test_businesscard_exists",
+  "test_views.py::BusinessCardTestCase::test_businesscard_forms_exist",
+  "test_views.py::BusinessCardTestCase::test_businesscard_get_contact_information",
+  "test_views.py::BusinessCardTestCase::test_businesscard_get_description",
+  "test_views.py::BusinessCardTestCase::test_businesscard_get_name"
+]

@@ -1,0 +1,150 @@
+
+{% extends "base.html"%} {% block content %}
+
+<div class="container">
+</div>
+        <div class="container">
+            <div class="row">
+                <div class="card col-md-8 offset-md-2 mt-md-5 col-12" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                    <div class="card-body" id="card">
+
+
+
+                        <div class="row mb-md-3">
+                            <div class="h1 col-md-6">Создать заказ</div>
+
+                        </div>
+                        <div class="row">
+
+                                <form method="POST" class="col-md-12">
+                                    {{ form.hidden_tag() }}
+    {{ s_form.hidden_tag() }}
+    {{ d_form.hidden_tag() }}
+                                <div class="form-group">
+                                    <div class="h5"><b>Почта клиента</b></div>
+                                    {{ form.client_email(class_="form-control col-md-12", required="", placeholder="name@example.com")}}
+                                        {% if form.client_email.errors %}
+                                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.client_email.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+
+                                    {%endif%}
+                                </div>
+                                    <div class="form-group">
+                                    <div class="h5"><b>Тип услуги</b></div>
+                                    <div>{{ s_form.select_type(class_="form-control form-control-lg", required="", id="type") }} <br>Нет нужной услуги? <a class="btn btn-outline-dark"   href="{{ url_for('business.add_possible_process') }}" role="button">СОЗДАЙ ЕЕ</a> </div>
+                                {% if s_form.select_type.errors %}
+                                    {% for error in s_form.select_type.errors %}
+                                         <div style="color: red;">{{ error }}</div>
+                                        {% endfor %}
+                                        {% endif %}</div>
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-5 col-6">
+          <img id= "picture" class="img-fluid d-block float-right col-md-12" height="800" src="./static/pictures/" alt=""> </div>
+      </div>
+
+                                    <div class="form-group">
+                                <div class="h5"><b>Описание услуги</b></div>
+                                         <div class="form-group">
+                                             <a id="d"> Описание услуги </a>
+                                         </div>
+                                        <div class="h5"><b>Дополнительная информация</b></div>
+                                {{ form.description(class_="form-control", rows="3", required="", placeholder="Дополнительная информация")}}
+                                        {% if form.description.errors %}
+                                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.description.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+
+                                    {%endif%}
+                                </div>
+
+
+                                        <div class="form-group">
+                                    <div class="h5"><b>Срок завершения</b></div>
+
+                                    <div>{{ d_form.dt(class="dtpick form-control") }}</div>
+                                {% if d_form.dt.errors %}
+                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in d_form.dt.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                            {% endif %}
+                                            </div>
+
+                                    <div class="form-group">
+                                    <div class="h5"><b>Цена</b></div>
+
+                                    <div>{{ form.price(class="form-control", id="p") }}</div>
+                                {% if form.price.errors %}
+                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.price.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                            {% endif %}
+                                            </div>
+
+                                <button type="submit"method="POST" class="btn btn-warning col-md-12" style="height: 50px;">Создать</button>
+
+
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+<div>{{ h.desc(class_="form-control invisible form-control-lg", required="", id="desc") }}</div>
+<div>{{ h.price(class_="form-control invisible form-control-lg", required="", id="price") }}</div>
+<div>{{ h.pic(class_="form-control invisible form-control-lg", required="", id="pic") }}</div>
+
+<script>
+$(function() {
+ 		$( ".dtpick" ).datepicker();
+ 	});
+    jQuery(function($) {
+ 		$("#type").mousedown(function(){
+ 		    var t = document.getElementById("type").selectedIndex
+ 		    console.log(t);
+ 		    document.getElementById("desc").selectedIndex = t;
+ 		    var d = document.getElementById("desc").value
+ 		    console.log(d);
+ 		    document.getElementById("d").innerText=d;
+
+
+ 		    document.getElementById("price").selectedIndex = t;
+ 		    var p = document.getElementById("price").value
+ 		    console.log(p);
+ 		    document.getElementById("p").value=p;
+
+ 		    document.getElementById("pic").selectedIndex = t;
+ 		    var pic = "./static/pictures/"+ document.getElementById("pic").value
+ 		    console.log(pic);
+ 		    document.getElementById("picture").src=pic;
+
+ 		});
+ 		});
+
+
+</script>
+
+
+{% endblock %}

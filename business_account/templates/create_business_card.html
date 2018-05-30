@@ -1,0 +1,270 @@
+
+
+{% extends "base.html"%} {% block content %}
+ <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
+
+
+<div class="container">
+</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="h1 mb-md-2 col-md-12">Изменить страничку бизнеса</div>
+                            </div>
+                            <div class="row">
+                                <form class="col-md-12 form-group" method="post" enctype=multipart/form-data>
+                                    {{ form.hidden_tag() }}
+                                    <div class="form-group">
+                                        <div class="h5"><b>{{name}}</b></div>
+                                        
+
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="h5 mt-md-3"><b>О бизнесе</b></div>
+                                        {{ form.description(class_="form-control",rows="3", required="", placeholder="Описание")}}
+                                        {% if form.description.errors %}
+                                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.description.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                    {%endif%}
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="h5 mt-md-3"><b>Контактная информация</b></div>
+                                        {{ form.contact_information(class_="form-control",rows="3", required="", placeholder="Телефон: 8 888 888 88 88")}}
+                                        {% if form.contact_information.errors %}
+                                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.contact_information.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+
+                                        {%endif%}
+                                    </div>
+
+
+                                    <div class="form-group">
+                                    <div class = "h5 mt-md-3"><b>Загрузить логотип</b></div>
+                                    <p><input  type=file name=file>
+                                    </p>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                    <div class = "h5 mt-md-3"><b>Ваш адрес</b></div>
+                                    {{ form.address(class_="form-control",id="address", required="", placeholder="Улица, дом ... ")}}
+                                        {% if form.address.errors %}
+                                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.address.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+
+                                    {%endif%}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="h5"><b>Карта</b></div>
+
+                                           <div id="map_geoc"  style="width: 100%; height: 400px;"></div>
+                                     </div>
+
+
+
+                               <div class="form-group py-1">
+                                        <button type="submit" class="btn btn-warning col-md-12">Сохранить</button>
+
+                                    </div>
+
+
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<script src="//api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+<script type="text/javascript">
+ymaps.ready(init);
+
+function init() {
+    var myPlacemark,
+        myMap = new ymaps.Map('map_geoc', {
+            center: [55.753994, 37.622093],
+            zoom: 9,
+            controls: ['zoomControl']
+
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
+
+
+   myMap.cursors.push('arrow');
+    // Слушаем клик на карте.
+    myMap.events.add('click', function (e) {
+        var coords = e.get('coords');
+
+        // Если метка уже создана – просто передвигаем ее.
+        if (myPlacemark) {
+            myPlacemark.geometry.setCoordinates(coords);
+        }
+        // Если нет – создаем.
+        else {
+            myPlacemark = createPlacemark(coords);
+            myMap.geoObjects.add(myPlacemark);
+            // Слушаем событие окончания перетаскивания на метке.
+            myPlacemark.events.add('dragend', function () {
+                getAddress(myPlacemark.geometry.getCoordinates());
+            });
+        }
+        getAddress(coords);
+    });
+
+    // Создание метки.
+    function createPlacemark(coords) {
+        return new ymaps.Placemark(coords, {
+            iconCaption: 'поиск...'
+        }, {
+            preset: 'islands#redDotIconWithCaption',
+            draggable: true
+        });
+    }
+
+    // Определяем адрес по координатам (обратное геокодирование).
+    function getAddress(coords) {
+        myPlacemark.properties.set('iconCaption', 'поиск...');
+        ymaps.geocode(coords).then(function (res) {
+            var firstGeoObject = res.geoObjects.get(0);
+            document.getElementById("address").value=firstGeoObject.properties.get('name');
+
+            myPlacemark.properties
+                .set({
+                    iconCaption: firstGeoObject.properties.get('name'),
+                    balloonContent: firstGeoObject.properties.get('text')
+                });
+        });
+    }
+
+    function getAddressFromText(coords) {
+        myPlacemark.properties.set('iconCaption', 'поиск...');
+        ymaps.geocode(coords).then(function (res) {
+            var firstGeoObject = res.geoObjects.get(0);
+            myPlacemark.properties
+                .set({
+                    iconCaption: firstGeoObject.properties.get('name'),
+                    balloonContent: firstGeoObject.properties.get('text')
+                });
+        });
+    }
+
+     document.getElementById('address').addEventListener('keydown', function() {
+
+    ymaps.geocode(get_text(), {
+
+        results: 1
+    }).then(function (res) {
+            // Выбираем первый результат геокодирования.
+            var firstGeoObject = res.geoObjects.get(0),
+                // Координаты геообъекта.
+                coords = firstGeoObject.geometry.getCoordinates(),
+                // Область видимости геообъекта.
+                bounds = firstGeoObject.properties.get('boundedBy');
+
+
+            // Если метка уже создана – просто передвигаем ее.
+        if (myPlacemark) {
+            myPlacemark.geometry.setCoordinates(coords);
+        }
+        // Если нет – создаем.
+        else {
+            myPlacemark = createPlacemark(coords);
+            myMap.geoObjects.add(myPlacemark);
+            // Слушаем событие окончания перетаскивания на метке.
+            myPlacemark.events.add('dragend', function () {
+                getAddressFromText(myPlacemark.geometry.getCoordinates());
+            });
+        }
+        getAddressFromText(coords);
+
+            // Масштабируем карту на область видимости геообъекта.
+            myMap.setBounds(bounds, {
+                // Проверяем наличие тайлов на данном масштабе.
+                checkZoomRange: true
+            });
+             });
+
+         function get_text() {
+         return document.getElementById("address").value;
+             }
+             });
+
+
+
+
+   $(document).ready(function(){
+
+
+    ymaps.geocode(get_text(), {
+
+        results: 1
+    }).then(function (res) {
+            // Выбираем первый результат геокодирования.
+            var firstGeoObject = res.geoObjects.get(0),
+                // Координаты геообъекта.
+                coords = firstGeoObject.geometry.getCoordinates(),
+                // Область видимости геообъекта.
+                bounds = firstGeoObject.properties.get('boundedBy');
+
+
+            // Если метка уже создана – просто передвигаем ее.
+        if (myPlacemark) {
+            myPlacemark.geometry.setCoordinates(coords);
+        }
+        // Если нет – создаем.
+        else {
+            myPlacemark = createPlacemark(coords);
+            myMap.geoObjects.add(myPlacemark);
+            // Слушаем событие окончания перетаскивания на метке.
+            myPlacemark.events.add('dragend', function () {
+                getAddress(myPlacemark.geometry.getCoordinates());
+            });
+        }
+        getAddress(coords);
+
+            // Масштабируем карту на область видимости геообъекта.
+            myMap.setBounds(bounds, {
+                // Проверяем наличие тайлов на данном масштабе.
+                checkZoomRange: true
+            });
+             });
+
+         function get_text() {
+         return document.getElementById("address").value;
+             }
+             });
+
+
+
+}
+
+
+
+
+</script>
+ {% endblock %}

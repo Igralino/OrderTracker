@@ -1,0 +1,178 @@
+{% extends "base.html"%} {% block content %}
+<div class="container">
+</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 offset-md-1">
+                    <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                        <div class="card-body">
+                            <div class="row">
+                            <div class="h1 col-md-12">Услуга</div>
+
+                        </div>
+                            <form class="" method="POST" enctype=multipart/form-data>
+                                    {{ form.hidden_tag() }}
+                                     {% if is_picture  %}
+
+                               <div class="form-group">
+
+                                        <div class="col-md-5 col-6">
+          <img class="img-fluid d-block float-right col-md-12" height="800" src="../static/pictures/{{picture}}" alt=""> </div>
+      </div>
+
+                            {% endif %}
+                                <div class="form-group">
+                                    <div class = "h4 mt-md-3"><b>Загрузить картинку для услуги</b></div>
+                                    <p><input  type=file name=file>
+                                    </p>
+                                    </div>
+
+
+
+                                    <div class="form-group w-100 my-4">
+                                        <div class="h4"><b>Тип услуги</b></div>
+
+                                    <div>{{ form.new_type(class_="form-control", required="") }}</div>
+                                            {% if form.new_type.errors %}
+                                             <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.new_type.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                            {% endif %}
+                                    <br>
+                                        <div class="h4"><b>Описание услуги</b></div>
+
+                                    <div>{{ form.desc(class_="form-control", required="") }}</div>
+                                            {% if form.desc.errors %}
+                                             <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.desc.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                            {% endif %}
+
+                                        <br>
+                                        <div class="h4"><b>Цена</b></div>
+
+                                    <div>{{ form.price(class_="form-control", required="") }}</div>
+                                            {% if form.price.errors %}
+                                             <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.price.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                            {% endif %}
+
+                                    </div>
+                                <div class="h4 "><b>Этапы</b>
+                                     <div class="form-group">
+                                        <div class="h5">Уже созданные этапы:</div>
+
+
+                                    <div class="col-md-12">
+                                        {{ formh.hidden_tag() }}
+
+                                        <div class="list-group" id="list-tab" role="tablist>">
+                                        {% for stage in stages_list %}
+
+                                                {% if stage.type=="Не начат" %}
+                                            {{ formh.id(class_="form-control invisible", name_=id, value=stage.id)}}
+                                            <a class="list-group-item col-md-11 h5"   aria-controls="list-profile">{{ stage.type }}</a>
+                                            {% elif stage.type=="Закончен" %}
+                                            <a class="list-group-item col-md-11 h5"   aria-controls="list-profile">{{ stage.type }}</a>
+                                            {{ formh.id(class_="form-control invisible", name_=id, value=stage.id)}}
+                                            {% else %}
+                                                 <div class="btn-group" id={{stage.id}}>
+                                                      <a class="btn btn-warning up h1">▲</a>
+                                                     <a class ="btn btn-warning down h1">▼</a>
+                                             <a class="list-group-item col-md-10 h5"   aria-controls="list-profile">{{ stage.type }}</a>
+                                                     {{ formh.id(class_="form-control invisible", name_=id, value=stage.id)}}
+
+
+
+
+
+                                                 </div>
+
+                                            {% endif %}
+                                            {% endfor %}
+
+                                        </div>
+                                    </div>
+                                     </div>
+
+
+                                    <div class="form-group py-1">
+                                        <div class="h5" id="main_option_div"><b>Добавить новый этап:</b>    <input id="option_add_button" class="btn btn-warning btn-sm" type="button" value="+"> </div>
+
+
+
+
+
+                                         {% for entry in form.stages.entries %}
+                                        <div class="sub_option_div input-group form-group">
+                                             {{ entry(class_="form-control", required="") }}
+                                                 <span class="input-group-btn">
+
+                                                    <input class="delete_button btn btn-warning" type="button" value="-">
+                                                 </span>
+                                        </div>
+                                        {% endfor %}
+
+
+
+                                        </div>
+
+
+                                    <div class="form-group py-1">
+                                        <button type="submit" class="btn btn-warning col-md-12">Сохранить</button>
+
+                                    </div>
+
+                            </div>
+                            <div class="row">
+</div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/popper.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+         <script>
+     $(".up").click(function(){
+     var $current = $(this).closest('div');
+     var $previous = $current.prev('div');
+     //if($previous.length !== 0){
+     $current.insertBefore($previous);
+     //}
+     return false;
+     });
+
+     $(".down").click(function(){
+     var $current = $(this).closest('div');
+     var $next = $current.next('div');
+     //if(next.length !== 0){
+     $current.insertAfter($next);
+     //}
+     return false;
+     });
+
+     </script>
+{% endblock %}

@@ -1,0 +1,30 @@
+
+{% extends "base.html"%} {% block content %}
+<div class="container">
+</div>
+        <div class="container">
+            <div class="row">
+                <div class="card col-md-10 offset-md-1 mt-md-5 col-12" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <form method="POST">
+                                <h3>Пожалуйста, подтвердите аккаунт!</h3>
+                                <h3>Не получили письмо? {{ form.submit(class_="btn btn-warning offset-md-5", required="")}}</h3>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/popper.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+
+   {% endblock %}

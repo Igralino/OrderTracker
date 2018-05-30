@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% block content %}
+    <script>
+        var msg = 0;
+
+        function take() {
+            $.ajax({
+                url: "/chat/get",
+                type: "POST",
+                data: {
+                    chat_id:{{ chat_id }},
+                    letter_id: msg
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+                    for (var i in response.new_messages) {
+                        sendNotification('OrderTracker', {body: response.new_messages[i].text, tag: 'ordertracker'});
+                        console.log(response.new_messages[i].text);
+
+                        if (response.new_messages[i].is_business)
+                            $("#messages").append('<div class="col-md-6 alert alert-success">' + response.new_messages[i].text + "</div>");
+                        else
+                            $("#messages").append('<div class="col-md-6 offset-md-6 alert alert-danger" align="right">' + response.new_messages[i].text + "</div>");
+                        if (response.new_messages[i].id > msg)
+                            msg = response.new_messages[i].id;
+                        $("#block").scrollTop($("#block").prop("scrollHeight"));
+                    }
+                },
+                error: function () {
+                    console.log("Message noy save");
+                }
+            });
+        }
+
+        jQuery(function ($) {
+            console.log("it work");
+
+
+            setInterval(take, 1000);
+            $("#button").click(function () {
+
+                console.log("work");
+
+                $.ajax({
+                    url: "/chat/post",
+                    type: "POST",
+                    data: {
+                        chat_id:{{ chat_id }},
+                        letter_id: $("#myid").val()
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log("Message save");
+                    },
+                    error: function () {
+                        console.log("Message noy save");
+                    }
+                });
+            });
+        });
+        var block = document.getElementById("block");
+        block.scrollTop = block.scrollHeight;
+    </script>
+    <div class="container">
+        <div class="col-md-12">
+            <div class="card mt-md-5 col-12 order-md-1 col-md-11" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 5px 17px;">
+                <div class="card-body">
+                    <div class="h2">Чат</div>
+                </div>
+                <div id="block" style="height: 500px; overflow: auto; width: 100%;">
+
+                    <div id="messages">
+                    </div>
+                </div>
+                <input type="text" class="form-control" id="myid"/>
+                <button id="button">Отправить</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

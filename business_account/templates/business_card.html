@@ -1,0 +1,347 @@
+{% extends "base.html" %} {% block content %}
+    <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
+    <div class="container">
+    </div>
+    <div class="container">
+    <div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;">
+                        <div class="card-body">
+                            <div class="row" align="right">
+                                <div class="h1 mb-md-2 col-md-12">{{name}}</div>
+                            </div>
+
+                            {% if not_created  %}
+                            <div align="center" class="h4"> Вы еще не создали свою страницу <br><a class="btn btn-warning"  href="{{ url_for('business.creation_card') }}" role="button">Создайте ее</a></div>
+
+                        {% else %}
+                            <hr align="center" width="500" size="2" color="Orange" />
+                            <div class="row">
+                                <form class="col-md-12">
+                                    {% if BusinessCard.get_picture(business_id)!="-1"  %}
+                                    <div class="form-group">
+
+                                        <div class="col-md-12 col-12">
+          <img class="img-fluid d-block float-right col-md-12" style="width: 200px" src="../static/pictures/{{BusinessCard.get_picture(business_id)}}" alt=""> </div>
+      </div>
+
+
+
+                            {% endif %}
+
+
+
+                                <div class="form-group">
+                                    {% if rating<=1.5 %}
+                                        <div class="rating h1 text-warning">
+                                            <span>★</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span> {{ rating }}<span
+                                                class="h6 text-muted"> {{ howmuchcomments }} отзывов</span>
+                                        </div>
+                                    {% elif rating>1.5 and rating<=2.5 %}
+                                        <div class="rating h1 text-warning">
+                                            <span>★</span><span>★</span><span>☆</span><span>☆</span><span>☆</span> {{ rating }}<span
+                                                class="h6 text-muted"> {{ howmuchcomments }} отзывов</span>
+                                        </div>
+                                    {% elif rating>2.5 and rating<=3.5 %}
+                                        <div class="rating h1 text-warning">
+                                            <span>★</span><span>★</span><span>★</span><span>☆</span><span>☆</span> {{ rating }}
+                                            <span class="h6 text-muted"> {{ howmuchcomments }} отзывов</span>
+                                        </div>
+                                    {% elif rating>3.5 and rating<=4.5 %}
+                                        <div class="rating h1 text-warning">
+                                            <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span> {{ rating }}<span
+                                                class="h6 text-muted"> {{ howmuchcomments }} отзывов</span>
+                                        </div>
+                                    {% elif rating>4.5 %}
+                                        <div class="rating h1 text-warning">
+                                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span> {{ rating }}<span
+                                                class="h6 text-muted"> {{ howmuchcomments }} отзывов</span>
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+
+                            <div class="form-group">
+                                <div class="h5"><b>О бизнесе</b></div>
+
+                                <p class="my-3"> {{ description }} </p>
+                            </div>
+                            <div class="form-group">
+                                <div class="h5"><b>Контактная информация</b></div>
+
+                                <p class="my-3"> {{ contact_information }} </p>
+                            </div>
+                            <div class="form-group">
+                                <div class="h5"><b>Адрес</b></div>
+
+                                <p class="my-3" id="address"> {{ address }} </p>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="h5"><b>Карта</b></div>
+
+                                <div id="map_geoc" style="width: 100%; height: 400px;"></div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="row">
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+
+                    {% if Widget.get_url(bid) and (Widget.get_pages(bid) == 3 or Widget.get_pages(bid) == 1)%}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-8 offset-md-2">
+                                    <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                                        {% if Widget.get_type(bid) == 'adv' %}
+
+                                            {% if Widget.get_pos(bid) == 1 %}
+                                                <p>{{ Widget.get_text(bid) }}</p>
+                                            {% endif %}
+                                            <img class="img-fluid d-block" src="/business/static/pictures/{{ Widget.get_url(bid) }}" alt="">
+                                            {% if Widget.get_pos(bid) == 2 %}
+                                                <p>{{ Widget.get_text(bid) }}</p>
+                                            {% endif %}
+                                        {% else %}
+                                            <iframe src="/business/widget" class="center-block alert alert-success"
+                                                    frameborder="0" scrolling="no" width="300" height="220">
+                                            </iframe>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+
+{% if not business_account %}
+<div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                        <div class="card-body">
+                        <form method="POST">
+                            {{ form.hidden_tag() }}
+                            <div class="row">
+                                <div class="h2 mb-md-2 col-md-12">Оставить комментарий</div>
+                            </div>
+                            {{ form.star(class_="invisible",id="rating", required="") }}
+                            <h5><b>Ваша оценка</b></h5>
+                            <div class="rating h1 text-warning" style="cursor: pointer;">
+                                <span id="st1">★</span><span id="st2">☆</span><span id="st3">☆</span><span
+                                    id="st4">☆</span><span id="st5">☆</span>
+                            </div>
+                            <div class=" h5"><b>{{ form.email.label }}</b></div>
+                            <div>{{ form.email(class_="form-control", required="") }}</div>
+                            {% if form.email.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>
+                                        {% for error in form.email.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </strong>
+                                </div>
+                            {% endif %}
+                            <br>
+                            <div class=" h5"><b>{{ form.name.label }}</b></div>
+                            <div>{{ form.name(class_="form-control", required="") }}</div>
+                            {% if form.name.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>
+                                        {% for error in form.name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </strong>
+                                </div>
+                            {% endif %}
+                            <br>
+                            <div class=" h5"><b>{{ form.text.label }}</b></div>
+                            <div>{{ form.text(class_="form-control", required="") }}</div>
+                            {% if form.text.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>
+                                        {% for error in form.text.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </strong>
+                                </div>
+                            {% endif %}
+                            <br>
+                            <button type="submit" method="POST" class="btn btn-warning col-md-12"
+                                    style="height: 50px;">Создать
+                            </button>
+
+                        </form>
+                    {% endif %}
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                    <br>
+                    <br>
+                    {% if comment_list is defined and comment_list|length > 0 %}
+                        <div class="h1 mb-md-2 col-md-12 offset-5  ">Комментарии</div>
+                        {% for comment in comment_list %}
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-8 offset-md-2">
+                                        <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                                            <div class="card-body">
+                                                <div class="row">
+
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <form class="col-md-12">
+                                                        <div class="form-group">
+                                                            <br>
+                                                            {% if comment.get_star(comment.id)<=1.5 %}
+                                                                <div class="rating h1 text-warning">
+                                                                    <span>★</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span> {{ comment.get_star(comment.id) }}
+                                                                </div>
+                                                            {% elif comment.get_star(comment.id)>1.5 and comment.get_star(comment.id)<=2.5 %}
+                                                                <div class="rating h1 text-warning">
+                                                                    <span>★</span><span>★</span><span>☆</span><span>☆</span><span>☆</span> {{ comment.get_star(comment.id) }}
+                                                                </div>
+                                                            {% elif comment.get_star(comment.id)>2.5 and comment.get_star(comment.id)<=3.5 %}
+                                                                <div class="rating h1 text-warning">
+                                                                    <span>★</span><span>★</span><span>★</span><span>☆</span><span>☆</span> {{ comment.get_star(comment.id) }}
+                                                                </div>
+                                                            {% elif comment.get_star(comment.id)>3.5 and comment.get_star(comment.id)<=4.5 %}
+                                                                <div class="rating h1 text-warning">
+                                                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span> {{ comment.get_star(comment.id) }}
+                                                                </div>
+                                                            {% elif comment.get_star(comment.id)>4.5 %}
+                                                                <div class="rating h1 text-warning">
+                                                                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span> {{ comment.get_star(comment.id) }}
+                                                                </div>
+                                                            {% endif %}
+                                                            <div class="h5"><b>Автор</b></div>
+
+                                                            <p class="my-3"> {{ comment.get_name(comment.id) }} </p>
+
+                                                            <div class="h5"><b>Текст</b></div>
+
+                                                            <p class="my-3"> {{ comment.text }} </p>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <br>
+
+                                                <div class="row">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <a> </a>
+
+                    {% endif %}
+                {% endif %}
+    <script src="//api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $("#st1").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "☆";
+            document.getElementById("st3").textContent = "☆";
+            document.getElementById("st4").textContent = "☆";
+            document.getElementById("st5").textContent = "☆";
+            document.getElementById("rating").value = 1;
+        });
+        $("#st2").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "★";
+            document.getElementById("st3").textContent = "☆";
+            document.getElementById("st4").textContent = "☆";
+            document.getElementById("st5").textContent = "☆";
+            document.getElementById("rating").value = 2;
+        });
+        $("#st3").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "★";
+            document.getElementById("st3").textContent = "★";
+            document.getElementById("st4").textContent = "☆";
+            document.getElementById("st5").textContent = "☆";
+            document.getElementById("rating").value = 3;
+        });
+        $("#st4").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "★";
+            document.getElementById("st3").textContent = "★";
+            document.getElementById("st4").textContent = "★";
+            document.getElementById("st5").textContent = "☆";
+            document.getElementById("rating").value = 4;
+        });
+        $("#st5").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "★";
+            document.getElementById("st3").textContent = "★";
+            document.getElementById("st4").textContent = "★";
+            document.getElementById("st5").textContent = "★";
+            document.getElementById("rating").value = 5;
+        });
+
+
+        ymaps.ready(init);
+
+        function init() {
+            var myPlacemark,
+                myMap = new ymaps.Map('map_geoc', {
+                    center: [55.753994, 37.622093],
+                    zoom: 9,
+                    controls: ['zoomControl']
+                }, {
+                    searchControlProvider: 'yandex#search'
+                });
+
+            $(document).ready(function () {
+                ymaps.geocode(get_text(), {
+                    results: 1
+                }).then(function (res) {
+                    // Выбираем первый результат геокодирования.
+                    var firstGeoObject = res.geoObjects.get(0),
+                        // Координаты геообъекта.
+                        coords = firstGeoObject.geometry.getCoordinates(),
+                        // Область видимости геообъекта.
+                        bounds = firstGeoObject.properties.get('boundedBy');
+                    firstGeoObject.options.set('preset', 'islands#darkBlueDotIconWithCaption');
+                    // Получаем строку с адресом и выводим в иконке геообъекта.
+                    firstGeoObject.properties.set('iconCaption', firstGeoObject.getAddressLine());
+                    // Добавляем первый найденный геообъект на карту.
+                    myMap.geoObjects.add(firstGeoObject);
+                    // Масштабируем карту на область видимости геообъекта.
+                    myMap.setBounds(bounds, {
+                        // Проверяем наличие тайлов на данном масштабе.
+                        checkZoomRange: true
+                    });
+                });
+
+                function get_text() {
+                    return document.getElementById("address").innerText;
+                }
+            });
+        }
+    </script>
+
+
+
+
+{% endblock %}
+

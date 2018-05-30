@@ -1,0 +1,268 @@
+{% extends "base.html"%} {% block content %}
+
+
+
+<div class="container">
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0 0px 0px;">
+
+
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="h1 mb-md-2 col-md-12"> Статус заказа <div class="text-warning">{{ number }}</div></div>
+                    </div>
+
+                    <div class="row">
+                        <form class="col-md-12"   method="post">
+                            {% if rating !=-1%}
+                            <div class="form-group">
+
+                                <div class="h4"><b>Оценка заказа</b></div>
+                                <div class="rating h1 text-warning">
+        <span id="st1">★</span><span id="st2">{% if rating >=2%}★{%else%}☆{%endif%}</span><span id="st3">{% if rating >=3%}★{%else%}☆{%endif%}</span><span id="st4">{% if rating >=4%}★{%else%}☆{%endif%}</span><span id="st5">{% if rating >=5%}★{%else%}☆{%endif%}</span>
+      </div>
+                                {% endif %}
+                            </div>
+                            {% if is_picture  %}
+
+                               <div class="form-group">
+
+                                        <div class="col-md-5 col-6">
+          <img class="img-fluid d-block float-right col-md-12" height="800" src="/business/static/pictures/{{picture}}" alt=""> </div>
+      </div>
+
+                            {% endif %}
+                            <div class="form-group">
+                                <div class="h4"><b>Клиент</b></div>
+                                <div class="h5">{{ client }}</div>
+                            </div>
+                            <div class="form-group">
+                                {{ d_form.hidden_tag() }}
+                                <div class="h4"><b>{{ d_form.dt.label }}</b></div>
+                                <div>{{ d_form.dt(class="dtpick form-control") }}</div>
+                                    {% if d_form.dt.errors %}
+                                        {% for error in d_form.dt.errors %}
+                                     <div style="color: red;">{{ error }}</div>
+                                                {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <div class="h4"><b>Тип</b></div>
+                                <div class="h5">{{ type }}</div>
+                            </div>
+                            <div class="h4 mt-md-3"><b>Описание</b></div>
+                            <div class="h5 form-group">
+                                {{ desc_type }}
+                            </div>
+
+                            <div class="h4 mt-md-3"><b>{{ form.desc.label }}</b></div>
+                            <div class="form-group">
+                                {{ form.desc(class_="form-control", required="") }}
+                            </div>
+
+                            {% if form.desc.errors %}
+                            {%for error in form.desc.errors%}
+                            <div class="alert alert-danger">
+                                <strong>
+                                    {{error}}
+                                </strong>
+                            </div>
+                            {%endfor%}
+                            {%endif%}
+
+
+                            <div class="h4"><b>Этап</b></div>
+                            <div class="form-group">
+                            </div>
+                            <div class="col-md-12">
+                                <div class="list-group" id="list-tab" role="tablist">
+                                    {{ s_form.hidden_tag() }}
+                                    {{ s_form.select_stage(class_="form-control", required="") }}
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="list-group"  role="tablist">
+                            <div class="h5"> Нет нужного этапа?  <a class="btn btn-outline-dark"  href="{{ url_for('business.possible_process', possible_process_id=Process.get_type_id(id)) }}" role="button">Добавь его</a> </div>
+                                </div>
+                            </div>
+
+
+                            <div class="h4 mt-md-3"><b>{{ form.price.label }}</b></div>
+                                    <div>{{ form.price(class_="form-control", required="", placeholder="1000 рублей") }}</div>
+                                            {% if form.price.errors %}
+                                             <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.price.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                            {% endif %}
+
+
+
+
+                            <br>
+                             <div class="form-group">
+                                <div class="h4"><b>{{ form.percent.label}}</b></div>
+
+                                <div>{{ form.percent(class_="form-control",id="percent", required="")}}</div>
+                             </div>
+
+                            <div class="progress mt-md-3">
+                                <div id = "p" class="progress-bar progress-bar-striped bg-warning" role="progressbar"
+                                     style="width: {{percent}}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">{{percent}}%
+                                </div>
+                            </div>
+
+
+                            <div class="row mt-md-3">
+
+
+
+
+                                <button type="submit" class="btn btn-secondary btn-warning col-md-12">Сохранить</button>
+
+                                <!--
+                                <input type="submit" class="btn btn-warning col-md-3 offset-md-6" value="ss">
+                                -->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                    </div>
+
+                </div>
+            </div>
+
+         <div class="col-md-5">
+            <div class="card mt-md-5 col-12 order-md-1 col-md-11" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0 0px 0px;">
+                <div class="card-body">
+                    <div class="form-group">
+                    <div class="h2">Чат</div>
+                    </div>
+                    {#                    here the chat goes#}
+
+                    <script>
+                        var msg=0;
+                        function take(){
+                                $.ajax({
+                            url: "/chat/get",
+                            type: "POST",
+                            data: {
+                                chat_id:{{ chat }},
+                                letter_id: msg
+                            },
+                            dataType: "json",
+                            success: function(response) {
+                                console.log(response);
+                                for (var i in response.new_messages){
+                                    console.log(response.new_messages[i].text);
+                                    if (response.new_messages[i].is_business)
+                                        $("#messages").append('<div class="col-md-6 alert alert-success">' + response.new_messages[i].text + "</div>");
+                                    else
+                                        $("#messages").append('<div class="col-md-6 offset-md-6 alert alert-danger" align="right">' + response.new_messages[i].text + "</div>");
+                                    if (response.new_messages[i].id > msg)
+                                        msg = response.new_messages[i].id;
+                                    var block = document.getElementById("block");
+                                    block.scrollTop = block.scrollHeight;
+                                }
+                            },
+                            error: function() {
+                                console.log("Message noy save");
+                            }
+                        });
+                        }
+                       
+                        jQuery(function($){
+                               console.log("it work");
+
+
+
+
+                        setInterval( take, 1000 );
+                        $("#button").click(function(){
+
+                            console.log("work");
+
+                            $.ajax({
+                            url: "/chat/post",
+                            type: "POST",
+                            data: {
+                                chat_id:{{ chat }},
+                                letter_id: $("#myid").val()
+                            },
+                            dataType: "json",
+                            success: function(response) {
+                                console.log("Message save");
+                                document.getElementById("myid").value = "";
+                            },
+                            error: function() {
+                                console.log("Message noy save");
+                            }
+                        });
+                            });
+                    });
+                        $(document).keypress(function (e) {
+    if (e.which == 13) {
+            document.getElementById("button").click();
+            document.getElementById("myid").value = "";
+    }
+});
+                        var block = document.getElementById("block");
+                      block.scrollTop = block.scrollHeight;
+                    </script>
+                    <div class="form-group">
+
+{#                                                <div class="h2">Чат</div>#}
+{#                                            </div>#}
+                                            <div id="block" style="height: 500px; overflow: auto; width: 100%;">
+                                            <div id="messages">
+                                                </div>
+                                            </div>
+                    <div class="form-group">
+                                            <input type="text" class="form-control" id="myid" />
+                    </div>
+                    <div class="form-group">
+                        <button class="form-control btn btn-secondary btn-warning col-md-12" id="button">Отправить</button>
+                    </div>
+
+{#                                        </div>#}
+                                    </div>
+                    </div>
+
+{#                    end chat#}
+
+
+            </div>
+
+
+<script>
+$(function() {
+ 		$( ".dtpick" ).datepicker();
+ 	});
+
+
+    jQuery(function($) {
+ 		$("#percent").mouseup(function(){
+ 		    var per=Math.ceil(document.getElementById("percent").value);
+ 		    document.getElementById("p").style.width = per+"%";
+ 		    document.getElementById("p").innerText = per+"%"
+
+ 		});
+ 	});
+</script>
+   {% endblock %}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        function getVote() {
+            var arr = [],
+                r = [],
+                r2 = ['<10:', '10-20:', '>20:'],
+                doc = '<h2>Result:</h2>\n' +
+                    '<table>\n';
+
+            for (var i = 0; i < 3; i++) {
+                arr[i] = Math.round(1 - 0.5 + Math.random() * (30));
+                if (arr[i] >= 10 * i && arr[i] < 10 * (i + 1)) {
+                    r[i] = 'images/poll2.gif'
+                }
+                else {
+                    r[i] = 'images/poll.gif'
+                }
+            }
+
+            for (var i = 0; i < 3; i++) {
+                doc += '<tr>\n' +
+                    '<td>' + r2[i] + '</td>\n' +
+                    '<td class="form-group">\n' +
+                    '<img src=' + r[i] + '\n' +
+                    'width=\'100\'\n' +
+                    'height=\'20\'>\n' +
+                    arr[i] + '\n' +
+                    '</td>\n' +
+                    '</tr>\n';
+            }
+            doc += '</table>\n';
+
+            document.getElementById("voting").innerHTML = doc;
+        }
+
+        setTimeout(function () {
+            window.location.reload(1);
+        }, 10000);
+    </script>
+</head>
+<body>
+<div class="widget">
+    <form id="widget-form" class="widget__form">
+        <label class="widget__form-label">
+            Выберите число
+            <div id="voting">
+                <form>
+                    <br><10:
+                    <input type="radio" name="vote" onclick="getVote()">
+                    <br>10-20:
+                    <input type="radio" name="vote" onclick="getVote()">
+                    <br>>20:
+                    <input type="radio" name="vote" onclick="getVote()">
+                </form>
+            </div>
+        </label>
+    </form>
+</div>
+</body>
+</html>

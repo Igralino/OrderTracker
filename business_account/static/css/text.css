@@ -1,0 +1,26 @@
+html, body, body * {
+    margin: 0;
+    padding: 0;
+}
+
+.widget, .widget * {
+    box-sizing: border-box;
+    font-family: Ubuntu;
+}
+
+.widget {
+    border: solid 1px #333;
+    padding: 20px;
+    color: black;
+}
+
+.widget__info {
+    color: steelblue;
+    font-size: 16px;
+    text-align: center;
+}
+
+.widget__form-label {
+    display: block;
+    line-height: 30px;
+}

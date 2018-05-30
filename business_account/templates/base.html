@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ title }}</title>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}{% endblock %}</title>
+    <script src="/static/assets/js/jquery.min.js"></script>
+    <script src="/static/assets/js/popper.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Custom styles for this template -->
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/"><i class="fa d-inline fa-lg fa-cloud"></i><b>OrderTracker</b></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse text-center justify-content-end" id="navbar2SupportedContent">
+            <ul class="navbar-nav">
+                {% block spanleft %}{% endblock %}
+
+
+                {% if session.get('id', '')!='' %}
+
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Странички&nbsp;</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                            <a class="dropdown-item" href="{{ url_for('business.business_card_list') }}">Странички
+                                бизнесов</a>
+                            <a class="dropdown-item"
+                               href="{{ url_for('business.business_card', business_id=session.get('id', '')) }}">Ваша
+                                страничка</a>
+                            <a class="dropdown-item" href="{{ url_for('business.creation_card') }}">Изменить
+                                страничку</a>
+                            <a class="dropdown-item" href="{{ url_for('business.widget_creation') }}">Виджет на
+                                страницу</a>
+
+
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Администрирование&nbsp;</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{{ url_for('business.created_process_list') }}">Таблица
+                                заказов</a>
+                            <a class="dropdown-item" href="{{ url_for('business.create_process') }}">Создать заказ</a>
+                            <a class="dropdown-item" href="{{ url_for('business.possible_process_list') }}">Таблица
+                                услуг</a>
+                            <a class="dropdown-item" href="{{ url_for('business.add_possible_process') }}">Создать
+                                услугу</a>
+                        </div>
+                    </li>
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Аккаунт&nbsp;</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item"
+                               href="{{ url_for('business.information_for_business') }}">Помощь</a>
+                            <a class="dropdown-item" href="{{ url_for('business.change_business') }}">Изменить
+                                настройки</a>
+                            <a class="dropdown-item" href="{{ url_for('business.exit_business') }}">Выход</a>
+
+                        </div>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Клиент</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{{ url_for('business_client.login') }}">Ваш заказ</a>
+                            <a class="dropdown-item" href="{{ url_for('business.business_card_list') }}">Странички
+                                бизнесов</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Бизнес</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item"
+                               href="{{ url_for('business.registration_business') }}">Регистрация</a>
+                            <a class="dropdown-item" href="{{ url_for('business.login_business') }}">Вход</a>
+                        </div>
+                    </li>
+
+                {% endif %}
+
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ url_for('business_client.about') }}"><i
+                            class="fa fa-fw fa-user-circle fa-lg"></i>&nbsp;О нас</a>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+</div>
+{% block content %} {% endblock %}
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+{% if session.get('id', '') != '' %}
+    <script>
+        {% if chat %}
+            var ignore = {{ chat }};
+        {% else %}
+            var ignore = 0;
+        {% endif %}
+        function sendNotification(title, href, options) {
+            if (!("Notification" in window)) {
+                console.log('Unsupported browser');
+            }
+
+            else if (Notification.permission === "granted") {
+                var notification = new Notification(title, options);
+
+                notification.onclick = function () {
+                    window.location.replace(href);
+                }
+            }
+
+            else if (Notification.permission !== 'denied') {
+                Notification.requestPermission(function (permission) {
+                    if (permission === "granted") {
+                        var notification = new Notification(title, options);
+
+                    } else {
+                        console.log('Permission denied');
+                    }
+                });
+            } else {
+                console.log('Permission denied');
+            }
+        }
+
+        function ttake() {
+            $.ajax({
+                url: "/chat/get_unread",
+                type: "POST",
+                data: {
+                    business_id: {{ session['id'] }}
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.new_messages);
+                    for (var i in response.new_messages) {
+                        if (response.new_messages[i].chat !== ignore)
+                            sendNotification('OrderTracker', '/business/created_process/' + response.new_messages[i].process, {
+                                body: response.new_messages[i].text,
+                                tag: response.new_messages[i].chat
+                            });
+                    }
+                },
+                error: function () {
+                    console.log("Server is not responding");
+                }
+            });
+        }
+
+        jQuery(function ($) {
+            console.log("Notifications ok");
+            setInterval(ttake, 1000);
+        });
+
+
+    </script>
+{% endif %}
+
+<script>
+    $(function () {
+        $(".dtpick").datepicker();
+    });
+
+    $(function () {
+
+        $("#st1").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "☆";
+            document.getElementById("st3").textContent = "☆";
+            document.getElementById("st4").textContent = "☆";
+            document.getElementById("st5").textContent = "☆";
+            document.getElementById("rating").value = 1;
+        });
+        $("#st2").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "★";
+            document.getElementById("st3").textContent = "☆";
+            document.getElementById("st4").textContent = "☆";
+            document.getElementById("st5").textContent = "☆";
+            document.getElementById("rating").value = 2;
+        });
+        $("#st3").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "★";
+            document.getElementById("st3").textContent = "★";
+            document.getElementById("st4").textContent = "☆";
+            document.getElementById("st5").textContent = "☆";
+            document.getElementById("rating").value = 3;
+        });
+        $("#st4").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "★";
+            document.getElementById("st3").textContent = "★";
+            document.getElementById("st4").textContent = "★";
+            document.getElementById("st5").textContent = "☆";
+            document.getElementById("rating").value = 4;
+        });
+        $("#st5").mousedown(function () {
+            document.getElementById("st1").textContent = "★";
+            document.getElementById("st2").textContent = "★";
+            document.getElementById("st3").textContent = "★";
+            document.getElementById("st4").textContent = "★";
+            document.getElementById("st5").textContent = "★";
+            document.getElementById("rating").value = 5;
+        });
+    });
+
+    jQuery(function ($) {
+        $("#type").mousedown(function () {
+            var t = document.getElementById("type").selectedIndex
+            console.log(t);
+            document.getElementById("desc").selectedIndex = t;
+            var d = document.getElementById("desc").value
+            console.log(d);
+            document.getElementById("d").innerText = d;
+
+
+            document.getElementById("price").selectedIndex = t;
+            var p = document.getElementById("price").value
+            console.log(p);
+            document.getElementById("p").value = p;
+
+        });
+    });
+
+    jQuery(function ($) {
+        $("#percent").mouseup(function () {
+            var per = Math.ceil(document.getElementById("percent").value);
+            document.getElementById("p").style.width = per + "%";
+            document.getElementById("p").innerText = per + "%"
+
+        });
+    });
+    $(document).ready(() => {
+        const min_stages = 0;
+    const max_stages = 10;
+    let current_stages = $('.sub_option_div').length;
+
+    let $main_div = $('#main_option_div');
+    let $add_button = $('#option_add_button');
+
+    function toggle_delete_buttons(value, condition=true) {
+        if (condition)
+            $('input.delete_button').prop('disabled', !value);
+    }
+
+    function toggle_add_button(value, condition=true) {
+        if (condition)
+            $add_button.prop('disabled', !value);
+    }
+
+    toggle_delete_buttons(false, current_stages === min_stages);
+    toggle_add_button(false, current_stages === max_stages);
+
+    /* LISTENERS */
+    $add_button.click(() => {
+        if(current_stages < max_stages)
+    {
+        current_stages++;
+
+        let current_id = 'stages-' + (current_stages - 1) + '';
+
+        // Create new field
+        let $outer_div = $("<div/>", {
+            class: "sub_option_div input-group form-group"
+        }).appendTo($main_div);
+
+        //!!!!!!!!!!!!!!!!!!!
+        $("<input/>", {
+            class: "form-control",
+            id: current_id,
+            name: current_id,
+            placeholder: "Этап",
+            value: "",
+            type: "text",
+            required: ""
+        }).appendTo($outer_div);
+        //!!!!!!!!!!!!!!!!!!!!!
+
+        let $button_span = $("<span/>", {
+            class: "input-group-btn"
+        }).appendTo($outer_div);
+
+        $("<input/>", {
+            class: "delete_button btn btn-warning",
+            type: "button",
+            value: "-"
+        }).appendTo($button_span);
+
+        toggle_add_button(false, current_stages === max_stages);
+        toggle_delete_buttons(true);
+    }
+    });
+
+    $main_div.on('click', '.delete_button', (event) => {
+        if(current_stages > min_stages
+    )
+    {
+        current_stages--;
+        $(event.currentTarget).closest('div').remove();
+
+        //Update ids and names
+        $('.sub_option_div').each((i, obj) => {
+            let $string_input = $(obj).children('input').first();
+
+        $string_input.prop('id', 'stages-' + i);
+        $string_input.prop('name', 'stages-' + i);
+    })
+        ;
+
+        toggle_add_button(true);
+        toggle_delete_buttons(false, current_stages === min_stages);
+    }
+    })
+    ;
+    })
+    ;
+</script>

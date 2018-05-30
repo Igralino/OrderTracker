@@ -1,0 +1,405 @@
+{% extends "base.html" %} {% block content %}
+
+
+
+    <div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0 5px 17px;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="h1 mb-md-2 col-md-12"> Статус заказа
+                            <div class="text-warning">{{ number }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form class="col-md-12" method="post">
+                            <div class="form-group">
+                                {% if is_picture %}
+
+
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-5 col-6">
+                                            <img class="img-fluid d-block float-right col-md-12" height="800"
+                                                 src="/business/static/pictures/{{ picture }}" alt="{{ picture }}">
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                                <div class="h4">
+                                    <b>Бизнес</b>
+                                </div>
+                                {% if business_card_exists %}
+
+                                    <a class="btn btn-warning col-md-12"
+                                       href="{{ url_for('business.business_card', business_id=business_id) }}"
+                                       role="button">{{ business_name }}</a>
+
+                                {% else %}
+                                    <div class="h5">{{ business_name }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <div class="h4">
+                                    <b>Ваша почта</b>
+                                </div>
+                                <div class="h5">{{ client_email }}</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="h4">
+                                    <b>Срок</b>
+                                </div>
+                                <div class="h5">{{ data }}</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="h4">
+                                    <b>Тип</b>
+                                </div>
+                                <div class="h5">{{ type }}</div>
+                            </div>
+                            <div class="h4 mt-md-3">
+                                <b>Описание</b>
+                            </div>
+                            <div class="form-group h5"> {{ desc_type }} </div>
+                            <div class="h4 mt-md-3">
+                                <b>Дополнительная информация</b>
+                            </div>
+                            <div class="form-group h5"> {{ desc }} </div>
+                            <div class="h4">
+                                <b>Текущая стадия</b>
+                            </div>
+                            <div class="form-group h5"> {{ current_stage_name }} </div>
+                            <div class="h4">
+                                <b>Цена</b>
+                            </div>
+                            <div class="form-group h5"> {{ price }} рублей</div>
+                            <div class="h4">
+                                <b>На сколько процентов услуга закончена:</b> {{ percent }}%
+                            </div>
+
+                            <div class="progress mt-md-3">
+                                <div class="progress-bar progress-bar-striped bg-warning" role="progressbar"
+                                     style="width: {{ percent }}%" aria-valuenow="75" aria-valuemin="0"
+                                     aria-valuemax="100">{{ percent }}%
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row"></div>
+                </div>
+            </div>
+            <div class="card mt-md-4 col-12 col-md-10 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0 5px 17px;">
+                <div class="card-body">
+                    <div class="h2">Чат</div>
+
+                    {#                    here the chat goes#}
+
+                    <script>
+                        var msg = 0;
+
+                        function take() {
+                            $.ajax({
+                                url: "/chat/get",
+                                type: "POST",
+                                data: {
+                                    chat_id:{{ chat }},
+                                    letter_id: msg
+                                },
+                                dataType: "json",
+                                success: function (response) {
+                                    console.log(response);
+                                    for (var i in response.new_messages) {
+                                        console.log(response.new_messages[i].text);
+                                        if (response.new_messages[i].is_business)
+                                            $("#messages").append('<div class="col-md-6 alert alert-success">' + response.new_messages[i].text + "</div>");
+                                        else
+                                            $("#messages").append('<div class="col-md-6 offset-md-6 alert alert-danger" align="right">' + response.new_messages[i].text + "</div>");
+                                        if (response.new_messages[i].id > msg)
+                                            msg = response.new_messages[i].id;
+                                        var block = document.getElementById("block");
+                                        block.scrollTop = block.scrollHeight;
+                                    }
+                                },
+                                error: function () {
+                                    console.log("Message noy save");
+                                }
+                            });
+                        }
+
+                        jQuery(function ($) {
+                            console.log("it work");
+
+
+                            setInterval(take, 1000);
+                            $("#button").click(function () {
+
+                                console.log("work");
+
+                                $.ajax({
+                                    url: "/chat/post",
+                                    type: "POST",
+                                    data: {
+                                        chat_id:{{ chat }},
+                                        letter_id: $("#myid").val()
+                                    },
+                                    dataType: "json",
+                                    success: function (response) {
+                                        console.log("Message save");
+                                        document.getElementById("myid").value = "";
+                                    },
+                                    error: function () {
+                                        console.log("Message noy save");
+                                    }
+                                });
+                            });
+                        });
+                        $(document).keypress(function (e) {
+                            if (e.which == 13) {
+                                document.getElementById("button").click();
+                                document.getElementById("myid").value = "";
+                            }
+                        });
+                        var block = document.getElementById("block");
+                        block.scrollTop = block.scrollHeight;
+                    </script>
+                    <div class="container">
+                        <div class="col-md-12">
+                            {#                                        <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;#}
+                            {#                        transition: ease;#}
+                            {#                        box-shadow: 0px 0px 0px;">#}
+                            {#                                            <div class="form-group">
+
+{#                                                <div class="h2">Чат</div>#}
+                            {#                                            </div>#}
+                            <div id="block" style="height: 500px; overflow: auto; width: 100%;">
+                                <div id="messages">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="myid"/>
+                            </div>
+                            <div class="form-group">
+                                <button class="form-control btn btn-secondary btn-warning col-md-12" id="button">
+                                    Отправить
+                                </button>
+                            </div>
+                            {#                                        </div>#}
+                        </div>
+                    </div>
+
+                    {#                    end chat#}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="col-md-5">
+            <div class="card mt-md-5 col-12 order-md-1 col-md-11" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0 5px 17px;">
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form_star.star(class_="invisible",id="rating", required="") }}
+
+                        <div class="h2 mb-md-2 col-md-12">Оценка за заказ</div>
+
+                        {{ form_star.hidden_tag() }}
+
+
+                        <div class="rating h1  col-md-12 text-warning" style="cursor: pointer;">
+                            <span id="st1">{% if rating >=1 %}★{% else %}☆{% endif %}</span><span
+                                id="st2">{% if rating >=2 %}★{% else %}☆{% endif %}</span><span
+                                id="st3">{% if rating >=3 %}★{% else %}☆{% endif %}</span><span
+                                id="st4">{% if rating >=4 %}★{% else %}☆{% endif %}</span><span
+                                id="st5">{% if rating >=5 %}★{% else %}☆{% endif %}</span>
+                        </div>
+
+
+                        <div class="form-group col-md-12">
+                            {{ form_star.submit2(class_="btn btn-warning col-md-12", required="") }}
+
+                        </div>
+                        {% if starsave!="" %}
+                            <div class="alert alert-danger">
+                                <strong>
+                                    {{ starsave }}
+                                </strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+
+                            </div>
+                        {% endif %}
+
+
+                    </form>
+
+
+                </div>
+            </div>
+
+
+            <div class="card mt-md-5 col-12 order-md-1 col-md-11" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0 5px 17px;">
+                <div class="card-body">
+                    <div class="form-group col-md-12">
+                        <a class="btn btn-warning col-md-12"
+                           href="{{ url_for('business_client.client_process_list', client_id=client_id) }}"
+                           role="button">Bce ваши заказы</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-md-5 col-12 order-md-1 col-md-11" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0 5px 17px;">
+
+
+                <div class="card-body">
+                    <form class="col-md-12 form-group" method="post">
+                        <div class="form-group">
+                            <div class="h2 mb-md-2 col-md-12">Этапы</div>
+                            <ul class="list-group"> {% for stage in stages %}
+                                {% if stage.type == current_stage_name %}
+                                    <li class="list-group-item active bg-warning">{{ current_stage_name }}</li>
+
+                                {% else %}
+                                    <li class="list-group-item">{{ stage.type }}
+                                {% endif %}
+
+                            <i class="fa fa-fw fa-bicycle"></i>
+                            </li> {% endfor %}
+                            </ul>
+                            {{ form_stage.hidden_tag() }}
+                            {{ form_check.hidden_tag() }}
+                        </div>
+                        {% if send_stages %}
+                            <div class="form-group">
+                            <div class="form-check"><label
+                                    class="form-check-label">{{ form_check.checkbox(class_="form-check-input", required="") }}
+                                Уведомлять только об окончании заказа</label></div>
+                            <div class="card-body">
+                            <div class="form-group col-md-12">
+
+
+                            </div>
+                        {% else %}
+                            <div class="form-group">
+                            <div class="form-check"><label
+                                    class="form-check-label">{{ form_check.checkbox(class_="form-check-input", required="") }}
+                                Уведомлять об измении этапов</label></div>
+                            <div class="card-body">
+                            <div class="form-group col-md-12">
+
+
+                            </div>
+
+                        {% endif %}
+                        {{ form_stage.submit1(class_="btn btn-warning col-md-12", required="") }}
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+
+            {% if Widget.get_url(business_id) and (Widget.get_pages(business_id) == 3 or Widget.get_pages(business_id) == 2) %}
+                <div class="container">
+                    <div class="row">
+                        <div class="mt-md-5 col-12 order-md-1 col-md-11">
+                            <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                                {% if Widget.get_type(business_id) == 'adv' %}
+
+                                    {% if Widget.get_pos(business_id) == 1 %}
+                                        <p>{{ Widget.get_text(business_id) }}</p>
+                                    {% endif %}
+                                    <img class="img-fluid d-block"
+                                         src="/business/static/pictures/{{ Widget.get_url(business_id) }}" alt="">
+                                    {% if Widget.get_pos(business_id) == 2 %}
+                                        <p>{{ Widget.get_text(business_id) }}</p>
+                                    {% endif %}
+                                {% else %}
+                                    <iframe src="/business/widget" class="center-block alert alert-success"
+                                            frameborder="0" scrolling="no" width="300" height="220">
+                                    </iframe>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+
+            $("#st1").mousedown(function () {
+                document.getElementById("st1").textContent = "★";
+                document.getElementById("st2").textContent = "☆";
+                document.getElementById("st3").textContent = "☆";
+                document.getElementById("st4").textContent = "☆";
+                document.getElementById("st5").textContent = "☆";
+                document.getElementById("rating").value = 1;
+            });
+            $("#st2").mousedown(function () {
+                document.getElementById("st1").textContent = "★";
+                document.getElementById("st2").textContent = "★";
+                document.getElementById("st3").textContent = "☆";
+                document.getElementById("st4").textContent = "☆";
+                document.getElementById("st5").textContent = "☆";
+                document.getElementById("rating").value = 2;
+            });
+            $("#st3").mousedown(function () {
+                document.getElementById("st1").textContent = "★";
+                document.getElementById("st2").textContent = "★";
+                document.getElementById("st3").textContent = "★";
+                document.getElementById("st4").textContent = "☆";
+                document.getElementById("st5").textContent = "☆";
+                document.getElementById("rating").value = 3;
+            });
+            $("#st4").mousedown(function () {
+                document.getElementById("st1").textContent = "★";
+                document.getElementById("st2").textContent = "★";
+                document.getElementById("st3").textContent = "★";
+                document.getElementById("st4").textContent = "★";
+                document.getElementById("st5").textContent = "☆";
+                document.getElementById("rating").value = 4;
+            });
+            $("#st5").mousedown(function () {
+                document.getElementById("st1").textContent = "★";
+                document.getElementById("st2").textContent = "★";
+                document.getElementById("st3").textContent = "★";
+                document.getElementById("st4").textContent = "★";
+                document.getElementById("st5").textContent = "★";
+                document.getElementById("rating").value = 5;
+            });
+        });
+    </script>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,92 @@
+
+{% extends "base.html"%} {% block content %}
+<div class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-xs-5 align-self-center">
+                        <h3>Если вы владелец бизнеса</h3>
+                        <p class="my-3">Если вы владелец бизнеса, это не означает, что вы думаете только о прибыли, нужно также не забывать про тех, кто вам ее приносит. Представьте, с каким большим удовольствием к вам станут обращаться, если люди будут уверены в вас, в том, что вы делаете. А что может принести эту уверенность? Правильно,
+Слежение за процессом</p>
+                        <a class="btn btn-warning" href="{{ url_for('business.login_business') }}" role="button">Войти</a>
+                    </div>
+                    <div class="col-md-6 col-xs-7">
+                        <div class="card p-5 text-dark" style="box-shadow: 0px 0px 0px;">
+                            <div class="card-body">
+                                <h1 class="mb-4">Регистрация</h1>
+                                <form method="POST">
+
+                                    {{ form.hidden_tag() }}
+                                    <div class="form-group">
+                                        <label><b>Название бизнеса</b> </label>
+                                        {{ form.name(class_="form-control", required="", placeholder="Коралл")}}
+                                        {% if form.name.errors %}
+                                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.name.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                    {%endif%}
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label><b>Почта</b></label>
+                                        {{ form.email(class_="form-control", required="", placeholder="Ваша почта")}}
+                                        {% if form.email.errors %}
+                                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.email.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+
+                                    {%endif%}
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label><b>Пароль</b></label>
+                                        {{ form.password(class_="form-control", required="", placeholder="Ваш пароль")}}
+                                        {% if form.password.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.password.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                    {% endif %}
+                                    </div>
+                                    <div class="form-group">
+                                        <label><b>Повторите пароль</b></label>
+                                        {{ form.check_password(class_="form-control", required="", placeholder="Пароль")}}
+                                        {% if form.check_password.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.check_password.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                    {% endif %}
+
+                                    </div>
+                                    <button type="submit" class="btn btn-warning col-md-12">Зарегистрироваться</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3"> </div>
+                    <div class="col-md-6"> </div>
+                </div>
+            </div>
+        </div>
+
+   {% endblock %}

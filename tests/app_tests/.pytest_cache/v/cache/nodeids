@@ -1,0 +1,9 @@
+[
+  "models_tests.py::BusinessTests::test_func_email_is_free",
+  "models_tests.py::BusinessTests::test_func_get_email",
+  "models_tests.py::BusinessTests::test_func_get_name",
+  "models_tests.py::BusinessTests::test_func_it_works",
+  "models_tests.py::BusinessTests::test_func_name_is_free",
+  "models_tests.py::BusinessTests::test_func_save",
+  "models_tests.py::BusinessTests::test_needed_fields_exist"
+]

@@ -1,0 +1,179 @@
+{% extends "base.html" %} {% block content %}
+    <div class="container">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="card col-md-12 offset-md-0 mt-md-5 col-12" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="h1 col-md-6">Таблица заказов</div>
+                        <div class="row col-md-6">
+                            <form class="form-inline col-md-12 " method="post">
+                                {{ form.hidden_tag() }}
+                                <div class="form-group col-md-10">
+                                    {{ form.words(class_="form-control col-md-12", required="", placeholder="Найти по номеру, бизнесу, ключевым словам") }}
+
+                                </div>
+                                <button class="btn my-2 my-sm-0  btn-outline-warning" type="submit">Найти</button>
+                            </form>
+
+
+                            {% if form.words.errors %}
+                                <div class="alert alert-danger offset-md-5">
+                                    <strong>
+                                        {% for error in form.words.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </strong>
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Тип</th>
+                                    <th>Номер</th>
+                                    <th>Бизнес</th>
+                                    <th>Статус</th>
+                                    <th>Срок</th>
+                                    <th>Процент</th>
+                                    <th>Цена</th>
+                                    <th>Подробнее</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for process in processes %}
+                                    {% if process!=0 %}
+                                        {% if process.get_stage_name(process.current_stage)=='Не начат' %}
+                                            <tr class="table-danger">
+                                                {% elif process.get_stage_name(process.current_stage)=='Закончен' %}
+                                            <tr class="table-success">
+                                                {% else %}
+                                            <tr class="table-warning">
+                                        {% endif %}
+                                    <th scope="row">{{ process.id_for_client }}</th>
+                                    <td>{{ PossibleProcess.get_type(process.type) }}</td>
+                                    <td>{{ process.number }}</td>
+                                    <td>{{ Business.get_name(process.business_id) }}</td>
+                                    <td>{{ process.get_stage_name(process.current_stage) }}</td>
+                                    <td>{{ process.get_data(process.id).strftime('%x') }}</td>
+                                    <td>{{ process.get_percent(process.id) }}</td>
+                                    <td>{{ process.get_price(process.id) }}</td>
+                                    <td>
+                                        <a href="/business_client/status/{{ process.id }}">
+                                            <button type="button" class="btn btn-warning">Посмотреть</button>
+                                        </a>
+                                    </td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}{% extends "base.html" %} {% block content %}
+    <div class="container">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="card col-md-12 offset-md-0 mt-md-5 col-12" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="h1 col-md-6">Таблица заказов</div>
+                        <div class="row col-md-6">
+                            <form class="form-inline col-md-12 " method="post">
+                                {{ form.hidden_tag() }}
+                                <div class="form-group col-md-10">
+                                    {{ form.words(class_="form-control col-md-12", required="", placeholder="Найти по номеру, бизнесу, ключевым словам") }}
+
+                                </div>
+                                <button class="btn my-2 my-sm-0  btn-outline-warning" type="submit">Найти</button>
+                            </form>
+
+
+                            {% if form.words.errors %}
+                                <div class="alert alert-danger offset-md-5">
+                                    <strong>
+                                        {% for error in form.words.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </strong>
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Тип</th>
+                                    <th>Номер</th>
+                                    <th>Бизнес</th>
+                                    <th>Статус</th>
+                                    <th>Срок</th>
+                                    <th>Процент</th>
+                                    <th>Цена</th>
+                                    <th>Подробнее</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for process in processes %}
+                                    {% if process!=0 %}
+                                        {% if process.get_stage_name(process.current_stage)=='Не начат' %}
+                                            <tr class="table-danger">
+                                                {% elif process.get_stage_name(process.current_stage)=='Закончен' %}
+                                            <tr class="table-success">
+                                                {% else %}
+                                            <tr class="table-warning">
+                                        {% endif %}
+                                    <th scope="row">{{ process.id_for_client }}</th>
+                                    <td>{{ PossibleProcess.get_type(process.type) }}</td>
+                                    <td>{{ process.number }}</td>
+                                    <td>{{ Business.get_name(process.business_id) }}</td>
+                                    <td>{{ process.get_stage_name(process.current_stage) }}</td>
+                                    <td>{{ process.get_data(process.id).strftime('%x') }}</td>
+                                    <td>{{ process.get_percent(process.id) }}</td>
+                                    <td>{{ process.get_price(process.id) }}</td>
+                                    <td>
+                                        <a href="/business_client/status/{{ process.id }}">
+                                            <button type="button" class="btn btn-warning">Посмотреть</button>
+                                        </a>
+                                    </td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

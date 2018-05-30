@@ -1,0 +1,153 @@
+{% extends "base.html"%} {% block content %}
+
+<div class="container">
+</div>
+<div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="h1 mb-md-2 col-md-12">Изменить название</div>
+                            </div>
+                            <div class="row">
+                                <form class="col-md-12 form-group" method="post">
+                                    {{ form.hidden_tag() }}
+                                    <div class="form-group">
+                                        <div class="h5"><b>Новое название</b></div>
+                                        {{ form.new_name(class_="form-control form-text", required="")}}
+                                        {% if form.new_name.errors %}
+                                            <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.new_name.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+
+                                    {%endif%}
+
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="h5 mt-md-3"><b>Пароль</b></div>
+                                        {{ form.password(class_="form-control", required="", placeholder="Ваш пароль")}}
+                                        {% if form.password.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in form.password.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                    {% endif %}
+                                    </div>
+                                                    {% if changename!="" %}
+                                                    <div class="alert alert-danger">
+                                            <strong>
+                                                {{ changename }}
+                                            </strong>
+                                </div>
+                                                    {% endif %}
+
+                                                    <div class="form-group col-md-12">
+                                        {{ form.submit1(class_="btn btn-warning col-md-12", required="")}}
+
+                                    </div>
+
+
+
+
+
+                            </form>
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="h1 mb-md-2 col-md-12">Изменить пароль</div>
+                            </div>
+                            <div class="row">
+                                <form class="col-md-12 form-group" method="POST">
+                                     {{ p_form.hidden_tag() }}
+                                    <div class="form-group">
+                                        <div class="h5"><b>Новый пароль</b></div>
+                                        {{ p_form.new_password(class_="form-control", required="", placeholder="Новый пароль")}}
+                                        {% if p_form.new_password.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in p_form.new_password.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                    {% endif %}
+
+                                                </div>
+                                    <div class="form-group">
+                                        <div class="h5 mt-md-3"><b>Повторить новый пароль</b></div>
+                                         {{ p_form.check_new_password(class_="form-control", required="", placeholder="Новый пароль")}}
+                                        {% if p_form.check_new_password.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in p_form.check_new_password.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                    {% endif %}
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="h5 mt-md-3"><b>Старый пароль</b></div>
+                                         {{ p_form.old_password(class_="form-control", required="", placeholder="Ваш пароль")}}
+                                        {% if p_form.old_password.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>
+                                            {%for error in p_form.old_password.errors%}
+                                            {{error}}
+                                        {%endfor%}
+                                            </strong>
+                                        </div>
+                                    {% endif %}
+                                        </div>
+                                                    {% if changepassword!="" %}
+                                                    <div class="alert alert-danger">
+                                            <strong>
+                                                {{ changepassword }}
+                                            </strong>
+                                </div>
+                                                    {% endif %}
+
+
+                                                    <div class="form-group col-md-12">
+                                        {{ p_form.submit2(class_="btn btn-warning col-md-12", required="")}}
+
+                                    </div>
+
+
+
+
+
+                            </form>
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   {% endblock %}

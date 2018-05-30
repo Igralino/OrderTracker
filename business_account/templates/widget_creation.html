@@ -1,0 +1,115 @@
+{% extends "base.html"%} {% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card mt-md-5 col-12 col-md-11 offset-md-1" style="border-radius: 25px;
+    transition: ease;
+    box-shadow: 0px 0px 0px;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="wrapper">
+                            <h2>Создайте ваш личный виджет</h2>
+
+                            <p>
+                            <ul class="list-group">
+                                <ul class="list-group-item list-group-item-warning">Уникальная степень кастомизации
+                                    специально для вас
+                                </ul>
+                            </ul>
+                            </p>
+
+                            <form method="POST" enctype = multipart/form-data>
+                                    {{form.hidden_tag()}}
+                                <p>
+                                <h1>Каким вы хотите видеть баннер?</h1>
+                                <div class="form-group">
+                                    {{ form.type(class_="form-control", required="") }}
+                                </div>
+
+                                <div id="add">
+
+                                </div>
+                            </form>
+                            {% if Widget.get_url(bid) and Widget.get_pages(bid)<4%}
+                            <form>
+                                 <div class="form-group">
+                                    <div class="h4"><b>Изменение позиции уже созданного виджета</b></div>
+                                    </div>
+                                <div class="form-group">
+
+                                    {{ erase_form.pages(class_="form-control", required="") }}
+                                </div>
+                                <div class="form-group">
+                                    {{ erase_form.submit(class_="btn btn-secondary btn-warning col-md-12", required="") }}
+                                </div>
+
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $("[name=type]").val('');
+        $("[name=type]").change(function(){
+            $("#add").empty()
+
+        var sadv='<div enctype="multipart/form-data" method="POST">'+
+                '<div class="form-group">'+
+                '<div class="h4"><b>Загрузите вашу рекламу на сервер</b></div>'+
+                '</div>'+
+                '{{ form.photo }}' +
+                 '<div class="form-group">'+
+                '<div class="h4"><b>Текст</b></div>'+
+                '</div>'+
+                '<div class="form-group">'+
+                '{{ form.title(class_="form-control", required="") }}' +
+                '</div>'+
+                '<div class="form-group">'+
+                '<div class="h4"><b>Положение текста</b></div>'+
+                '</div>'+
+                '<div class="form-group">'+
+                '{{ form.textpos(class_="form-control", required="") }}' +
+                 '</div>'+
+                 '<div class="form-group">'+
+                '<div class="h4"><b>Размещение виджета</b></div>'+
+                '</div>'+
+                '<div class="form-group">'+
+                '{{ form.pages(class_="form-control", required="") }}' +
+                '</div>' +
+                '<div class="form-group">'+
+                '{{ form.submit(class_="btn btn-secondary btn-warning col-md-12", required="") }}'+
+                '</div>';
+
+                var sgame='<h1>Вот игра, которую мы встроим</h1>'+
+                '<iframe src="/business/widget" class="pull-right alert alert-success"'+
+                'frameborder="0" scrolling="no" width="300" height="220">'+
+                '</iframe>' +
+                '<div class="form-group">'+
+                '<div class="h4"><b>Размещение виджета</b></div>'+
+                '</div>'+
+                 '<div class="form-group">'+
+                '{{ form.pages(class_="form-control", required="") }}' +
+                '</div>'+
+                '<div class="form-group">'+
+                '<p> {{ form.submit(class_="btn btn-secondary btn-warning col-md-12", required="")  }} </p>'+
+                 '</div>';
+        var t = $(this).val()
+        if (t == 'game'){
+        $("#add").append(sgame);
+        }
+        else {
+        $("#add").append(sadv);
+        }
+ });
+
+
+
+</script>
+{% endblock %}
