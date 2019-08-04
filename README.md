@@ -28,7 +28,7 @@ ___
 
 Данный проект был создан в качестве выпуской работы группы учеников [Московской Школы Программистов] при Яндексе.
 Made by:
-[QwertygidQ], [Igralino], [А. Соболев], [Arnoir], [karpp], [Floly], [Sid51], [itsvlas], [Saagilat], [AntonyBazin]
+[QwertygidQ], [Igralino], [А. Соболев], [GareevaAlice], [Arnoir], [karpp], [Floly], [Sid51], [itsvlas], [Saagilat], [AntonyBazin]
 
 [Московской Школы Программистов]: <https://informatics.ru>
 [QwertygidQ]: <https://gihub.com/QwertygidQ>
