@@ -34,6 +34,7 @@ Made by:
 [QwertygidQ]: <https://gihub.com/QwertygidQ>
 [Igralino]: <https://gihub.com/Igralino>
 [А. Соболев]: <https://vk.com/id_alexey2000>
+[GareevaAlice]:<https://github.com/GareevaAlice>
 [Arnoir]:<https://github.com/Arinoir>
 [karpp]:<https://github.com/karpp>
 [Floly]:<https://github.com/Floly>
